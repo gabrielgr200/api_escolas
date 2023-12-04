@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql =  require('mysql2');
+const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -9,13 +9,13 @@ const port = 6890;
 app.use(cors());
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'Skyfall20#?',
-    database: 'estudos',
+    database: 'escola',
 });
 
 db.connect((err) => {
@@ -26,17 +26,7 @@ db.connect((err) => {
 });
 
 app.get('/buscas', (req, res) => {
-    const sql = 'Select * from escola';
-    db.query(sql, (err, result) => {
-        if (err) {
-            throw err;
-        }
-        res.json(result);
-    });
-});
-
-app.get('/buscar/id', (req, res) => {
-    const sql = 'Select * from escola ';
+    const sql = 'Select * from escolas';
     db.query(sql, (err, result) => {
         if (err) {
             throw err;
