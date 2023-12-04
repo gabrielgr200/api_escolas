@@ -12,10 +12,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
 const db = mysql.createConnection({
-    host: 'localhost',
+    host: 'containers-us-west-37.railway.app',
     user: 'root',
-    password: 'Skyfall20#?',
+    password: '2F3UfdCTUbleiDyyydVt',
     database: 'escola',
+    port: '5699'
 });
 
 db.connect((err) => {
