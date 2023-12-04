@@ -36,6 +36,24 @@ app.get('/buscas', (req, res) => {
     });
 });
 
+app.get('/buscar-valores', (req, res) => {
+    const sql = 'SELECT DISTINCT ano, rede, ensino FROM escolas';
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({ error: 'Erro ao buscar valores' });
+            return;
+        }
+
+        const anos = Array.from(new Set(result.map(row => row.ano)));
+        const redes = Array.from(new Set(result.map(row => row.rede)));
+        const ensinos = Array.from(new Set(result.map(row => row.ensino)));
+
+        res.json({ anos, redes, ensinos });
+    });
+});
+
+
 app.get('/buscar-escola', (req, res) => {
     const { ano, ensino, rede } = req.query;
 
