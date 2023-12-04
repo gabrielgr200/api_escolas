@@ -35,6 +35,34 @@ app.get('/buscas', (req, res) => {
     });
 });
 
+app.get('/buscar-escola', (req, res) => {
+    const { ano, ensino, rede } = req.query;
+
+    let sql = 'SELECT * FROM escolas WHERE 1=1';
+    const params = [];
+
+    if (ano) {
+        sql += ' AND ano = ?';
+        params.push(ano);
+    }
+    if (ensino) {
+        sql += ' AND ensino = ?';
+        params.push(ensino);
+    }
+    if (rede) {
+        sql += ' AND rede = ?';
+        params.push(rede);
+    }
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        res.json(result);
+    });
+});
+
+
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 })
