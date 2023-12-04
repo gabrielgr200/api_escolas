@@ -37,7 +37,7 @@ app.get('/buscas', (req, res) => {
 });
 
 app.get('/buscar-valores', (req, res) => {
-    const sql = 'SELECT DISTINCT ano, rede, ensino FROM escolas';
+    const sql = 'SELECT DISTINCT ano, rede, ensino, Nome_da_escola FROM escolas';
 
     db.query(sql, (err, result) => {
         if (err) {
@@ -48,14 +48,15 @@ app.get('/buscar-valores', (req, res) => {
         const anos = Array.from(new Set(result.map(row => row.ano)));
         const redes = Array.from(new Set(result.map(row => row.rede)));
         const ensinos = Array.from(new Set(result.map(row => row.ensino)));
+        const nomesEscola = Array.from(new Set(result.map(row => row.Nome_da_escola)));
 
-        res.json({ anos, redes, ensinos });
+        res.json({ anos, redes, ensinos, nomesEscola });
     });
 });
 
 
 app.get('/buscar-escola', (req, res) => {
-    const { ano, ensino, rede } = req.query;
+    const { ano, ensino, rede, nomeEscola } = req.query;
 
     let sql = 'SELECT * FROM escolas WHERE 1=1';
     const params = [];
@@ -72,6 +73,10 @@ app.get('/buscar-escola', (req, res) => {
         sql += ' AND rede = ?';
         params.push(rede);
     }
+    if (nomeEscola) {
+        sql += ' AND Nome_da_escola = ?';
+        params.push(nomeEscola);
+    }
 
     db.query(sql, params, (err, result) => {
         if (err) {
@@ -80,6 +85,7 @@ app.get('/buscar-escola', (req, res) => {
         res.json(result);
     });
 });
+
 
 
 app.listen(port, () => {
